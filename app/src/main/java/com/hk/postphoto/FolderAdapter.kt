@@ -2,6 +2,7 @@ package com.hk.postphoto
 
 import android.content.Context
 import android.media.Image
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import android.view.LayoutInflater
@@ -14,7 +15,7 @@ import com.bumptech.glide.Glide
 class FolderAdapter(
     private val context: Context,
     private val folders: List<Folder>,
-//    private val listener : (String) -> Unit
+    val listener : (String,String) -> Unit
 ) : RecyclerView.Adapter<FolderAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -25,9 +26,9 @@ class FolderAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val folder = folders[position].folderName
         holder.folder.text = folder
-//        holder.itemView.setOnClickListener {
-//            listener(folders[position].id)
-//        }
+        holder.itemView.setOnClickListener {
+            listener(folders[position].id,folder)
+        }
     }
 
     override fun getItemCount(): Int {

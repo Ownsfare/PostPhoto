@@ -2,6 +2,7 @@ package com.hk.postphoto
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import com.hk.postphoto.ImagesGallery.listOfImages
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,10 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import java.util.ArrayList
 import android.provider.MediaStore
+import android.util.AttributeSet
+import android.util.Log
+import android.view.View
+import android.widget.TextView
 import java.lang.Exception
 
 
@@ -43,7 +48,8 @@ class MainActivity() : AppCompatActivity() {
         }
 
         recyclerView = findViewById(R.id.videoRv)
-        galleryImage = findViewById(R.id.galleryVideo)
+        galleryImage = findViewById(R.id.galleryImage)
+        val imageTv =  findViewById<TextView>(R.id.imageTv)
         if (ContextCompat.checkSelfPermission(
                 this@MainActivity,
                 Manifest.permission.READ_EXTERNAL_STORAGE
@@ -55,15 +61,33 @@ class MainActivity() : AppCompatActivity() {
                 MY_READ_PERMISSION_CODE
             )
         } else {
+
+            images = listOfImages(this)
             loadImages()
+
+            val tempChar1 = intent.getCharExtra("Temp",'0')
+            val folderId1 = intent.getStringExtra("FolderID")
+            val folderName1 = intent.getStringExtra("FolderName")
+
+            if(intent != null) {
+                if (tempChar1 == 'a') {
+                      imageTv.text = folderName1.toString()
+                      images = folderId1?.let { getAllImageOfFolder(it) }
+                      loadImages()
+                }
+            }else{
+                    images = listOfImages(this)
+                     loadImages()
+            }
         }
     }
+
 
 
     private fun loadImages() {
         recyclerView!!.setHasFixedSize(true)
         recyclerView!!.layoutManager = GridLayoutManager(this, 4)
-        images = listOfImages(this)
+//        images = listOfImages(this)
         Glide.with(this).load((images as ArrayList<String>)[0]).into(galleryImage)
         galleryAdapter = Adapter(this, images as ArrayList<String>){
             Glide.with(this).load(it).into(galleryImage)
@@ -127,5 +151,25 @@ class MainActivity() : AppCompatActivity() {
                     }catch (e: Exception){}
                 }while (cursor.moveToNext())
         cursor?.close()
+    }
+
+    @SuppressLint("Range")
+    private fun getAllImageOfFolder(folderId: String): ArrayList<String>{
+        var tempList = ArrayList<String>()
+        val selection = MediaStore.Images.Media.BUCKET_ID + " like? "
+        val projection = arrayOf(MediaStore.Images.Media.BUCKET_DISPLAY_NAME,MediaStore.Images.Media.BUCKET_ID,MediaStore.Images.Media.DATA)
+        val cursor = this.contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,projection,selection,
+            arrayOf(folderId),
+            MediaStore.Images.Media.DATE_ADDED + " DESC")
+        if(cursor != null)
+            if(cursor.moveToNext())
+                do {
+                    var pathC = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
+                    try {
+                        tempList.add(pathC)
+                    }catch (e: Exception){}
+                }while (cursor.moveToNext())
+        cursor?.close()
+        return tempList
     }
 }

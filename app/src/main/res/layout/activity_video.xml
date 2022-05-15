@@ -12,9 +12,9 @@
         android:layout_height="match_parent">
 
         <VideoView
-            android:id="@+id/galleryVideo"
+            android:id="@+id/galleryImage"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="375dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +25,7 @@
             android:layout_height="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/galleryVideo">
+            app:layout_constraintTop_toBottomOf="@+id/galleryImage">
 
             <View
                 android:id="@+id/divider"
@@ -37,7 +37,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginStart="16dp"
                 android:backgroundTint="@color/white"
@@ -46,7 +46,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/videoTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Gallery"
@@ -62,25 +62,31 @@
                     android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginLeft="5dp"
-                    app:layout_constraintStart_toEndOf="@+id/textView2"
+                    app:layout_constraintStart_toEndOf="@+id/videoTv"
                     app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
+            <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Choose From Gallery"
-                android:textColor="@color/purple_200"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/divider"
+                android:src="@drawable/ic_baseline_camera_alt_24"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.927"
-                app:layout_constraintStart_toStartOf="@+id/divider"
-                app:layout_constraintTop_toTopOf="@+id/divider"
-                app:layout_constraintVertical_bias="0.538" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginRight="15dp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_photo_library_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginRight="15dp" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
